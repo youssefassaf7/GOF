@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GOF | Premium Sneakers</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #fff;
+      color:  #000;
+    }
+
+    a {
+      text-decoration: none;
+      color: #000;
+      cursor: pointer;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .top-bar {
+      height: 38px;
+      background: #f3f3f3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 13px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .nav {
+      height: 78px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 38px;
+    }
+
+    .left-menu,
+    .right-menu {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    .right-menu {
+      justify-content: flex-end;
+    }
+
+    .logo {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -3px;
+      transform: skew(-10deg);
+    }
+
+    .search-box {
+      width: 260px;
+      background: #f5f5f5;
+      border-radius: 999px;
+      padding: 12px 18px;
+      border: none;
+      outline: none;
+    }
+
+    .icons {
+      display: flex;
+      gap: 20px;
+      font-size: 20px;
+    }
+
+    .hero-banner {
+  width: 100%;
+  height: 520px;
+  background: #eee;
+  overflow: hidden;
+}
+
+.hero-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+    .shop {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 34px;
+      padding: 42px 38px;
+    }
+
+    .filters {
+      border-right: 1px solid #e5e5e5;
+      padding-right: 28px;
+    }
+
+    .filters-title {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .filter-group {
+      border-top: 1px solid #e5e5e5;
+      padding: 22px 0;
+    }
+
+    .filter-group h4 {
+      margin-bottom: 16px;
+      font-size: 15px;
+    }
+
+    .filter-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      color: #444;
+      font-size: 14px;
+      cursor: pointer;
+      user-select: none;
+      transition: .2s ease;
+    }
+
+    .filter-option:hover,
+    .filter-option.selected {
+      color: #000;
+      font-weight: 800;
+    }
+
+    .filters-title button {
+      border: none;
+      background: transparent;
+      color: #777;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .filters-title button:hover {
+      color: #000;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      padding: 50px 20px;
+      text-align: center;
+      background: #f7f7f7;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    .circle {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #bbb;
+      border-radius: 50%;
+    }
+
+    .circle.active {
+      border: 5px solid #000;
+    }
+
+    .products-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .products-head h2 {
+      font-size: 22px;
+    }
+
+    select {
+      padding: 12px 18px;
+      border: 1px solid #ddd;
+      background: #fff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 26px 18px;
+    }
+
+    .product {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .product-img {
+      background: #F3F3F3;
+      height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+    .product:hover .product-img img {
+      transform: scale(1.04);
+    }
+
+    .wishlist {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: none;
+      background: #fff;
+      font-size: 20px;
+    }
+
+    .product-info {
+      padding-top: 12px;
+    }
+
+    .brand {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #000;
+    }
+
+    .product-name {
+      margin-top: 6px;
+      font-size: 15px;
+      color: #222;
+    }
+
+    .product-color {
+      color: #faf7f7;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .rating {
+      margin-top: 6px;
+      font-size: 13px;
+    }
+
+    .price-row {
+      margin-top: 8px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-weight: 800;
+    }
+
+    .old-price {
+      color: #777;
+      text-decoration: line-through;
+      font-weight: 400;
+    }
+
+    .quick {
+      margin-top: 12px;
+      width: 100%;
+      padding: 13px;
+      background: #000;
+      color: #fff;
+      border: none;
+      font-weight: 800;
+    }
+
+    .page {
+      display: none;
+      padding: 44px 38px;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .product-page {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 55px;
+    }
+
+    .gallery-main {
+      background: #f3f3f3;
+      height: 620px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .gallery-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .thumbs {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .thumb {
+      height: 95px;
+      background: #f3f3f3;
+      border: 1px solid #ddd;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .details h1 {
+      font-size: 48px;
+      margin: 14px 0;
+    }
+
+    .details .price-row {
+      font-size: 25px;
+      margin: 18px 0;
+    }
+
+    .section-label {
+      margin: 28px 0 12px;
+      font-weight: 800;
+    }
+
+    .sizes,
+    .colors {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      padding: 13px 18px;
+      border: 1px solid #ddd;
+      background: #fff;
+      min-width: 58px;
+      text-align: center;
+    }
+
+    .qty {
+      width: 120px;
+      padding: 14px;
+      border: 1px solid #ddd;
+    }
+
+    .actions {
+      display: flex;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      padding: 16px 28px;
+      border: none;
+      background: #000;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .btn.secondary {
+      background: #fff;
+      color: #000;
+      border: 1px solid #000;
+    }
+
+    .info-box {
+      margin-top: 22px;
+      padding: 22px;
+      border: 1px solid #e5e5e5;
+      line-height: 1.7;
+      color: #555;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 120px 1fr 120px 100px;
+      gap: 20px;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding: 18px 0;
+    }
+
+    .cart-item img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      background: #f3f3f3;
+    }
+
+    .checkout-form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      max-width: 820px;
+    }
+
+    .checkout-form input,
+    .checkout-form select {
+      padding: 14px;
+      border: 1px solid #ddd;
+    }
+
+    footer {
+      margin-top: 50px;
+      padding: 55px 38px;
+      background: #f7f7f7;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 30px;
+      border-top: 1px solid #e5e5e5;
+    }
+
+    footer h4 {
+      margin-bottom: 14px;
+    }
+
+    footer a {
+      display: block;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    @media (max-width: 1100px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .product-page {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .nav {
+        grid-template-columns: 1fr;
+        height: auto;
+        gap: 18px;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .left-menu,
+      .right-menu {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .hero-banner {
+        height: 300px;
+      }
+
+      .shop {
+        grid-template-columns: 1fr;
+        padding: 24px 18px;
+      }
+
+      .filters {
+        border-right: none;
+        padding-right: 0;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .product-img {
+        height: 260px;
+      }
+
+      footer {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .hero-banner {
+        height: 220px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .checkout-form {
+        grid-template-columns: 1fr;
+      }
+
+      .cart-item {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-bar">Join the GOF newsletter and get exclusive sneaker drops</div>
+
+  <header class="header">
+    <nav class="nav">
+      <div class="left-menu">
+        <a onclick="showHome()">Home</a>
+        <a>Men</a>
+        <a>Women</a>
+        <a>New Arrivals</a>
+        <a>Brands</a>
+        <a>Sale</a>
+      </div>
+
+      <div class="logo" onclick="showHome()">GOF</div>
+
+      <div class="right-menu">
+        <input class="search-box" id="search" placeholder="Search sneakers..." oninput="renderProducts()" />
+        <div class="icons">
+          <span onclick="showWishlist()">♡</span>
+          <span onclick="showAccount()">♙</span>
+          <span onclick="showCart()">🛍</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="home">
+    <section class="hero-banner">
+      <img src="images/banner.png" alt="Authentic original sneakers banner">
+    </section>
+
+    <section class="shop">
+      <aside class="filters">
+        <div class="filters-title">
+          <span>FILTER & SORT</span>
+          <button type="button" onclick="clearFilters()">Clear all</button>
+        </div>
+
+        <div class="filter-group">
+          <h4>SORT BY</h4>
+          <div class="filter-option" data-sort-option="low" onclick="setSort('low')"><span class="circle"></span> Price: Low to High</div>
+          <div class="filter-option" data-sort-option="high" onclick="setSort('high')"><span class="circle"></span> Price: High to Low</div>
+          <div class="filter-option" data-sort-option="relevance" onclick="setSort('relevance')"><span class="circle active"></span> Relevance</div>
+          <div class="filter-option" data-sort-option="newest" onclick="setSort('newest')"><span class="circle"></span> Newest</div>
+        </div>
+
+        <div class="filter-group">
+          <h4>PRODUCT TYPE</h4>
+          <div class="filter-option" data-filter="category" data-value="Lifestyle Sneakers" onclick="toggleFilter('category', 'Lifestyle Sneakers')">Lifestyle Sneakers</div>
+          <div class="filter-option" data-filter="category" data-value="Running Shoes" onclick="toggleFilter('category', 'Running Shoes')">Running Shoes</div>
+          <div class="filter-option" data-filter="category" data-value="Basketball Shoes" onclick="toggleFilter('category', 'Basketball Shoes')">Basketball Shoes</div>
+        </div>
+
+        <div class="filter-group">
+          <h4>SIZE</h4>
+          <div class="filter-option" data-filter="size" data-value="39" onclick="toggleFilter('size', 39)">39</div>
+          <div class="filter-option" data-filter="size" data-value="40" onclick="toggleFilter('size', 40)">40</div>
+          <div class="filter-option" data-filter="size" data-value="41" onclick="toggleFilter('size', 41)">41</div>
+          <div class="filter-option" data-filter="size" data-value="42" onclick="toggleFilter('size', 42)">42</div>
+          <div class="filter-option" data-filter="size" data-value="43" onclick="toggleFilter('size', 43)">43</div>
+          <div class="filter-option" data-filter="size" data-value="44" onclick="toggleFilter('size', 44)">44</div>
+        </div>
+
+        <div class="filter-group">
+          <h4>COLOR</h4>
+          <div class="filter-option" data-filter="color" data-value="White" onclick="toggleFilter('color', 'White')">White</div>
+          <div class="filter-option" data-filter="color" data-value="Black" onclick="toggleFilter('color', 'Black')">Black</div>
+          <div class="filter-option" data-filter="color" data-value="Grey" onclick="toggleFilter('color', 'Grey')">Grey</div>
+        </div>
+      </aside>
+
+      <div>
+        <div class="products-head">
+          <h2>GOF Sneakers</h2>
+          <select id="sort" onchange="setSort(this.value)">
+            <option value="relevance">Relevance</option>
+            <option value="newest">Newest</option>
+            <option value="low">Price Low to High</option>
+            <option value="high">Price High to Low</option>
+          </select>
+        </div>
+
+        <div class="grid" id="productGrid"></div>
+      </div>
+    </section>
+  </main>
+
+  <section id="productPage" class="page"></section>
+  <section id="cartPage" class="page"></section>
+  <section id="checkoutPage" class="page"></section>
+  <section id="accountPage" class="page"></section>
+  <section id="wishlistPage" class="page"></section>
+
+  <footer>
+    <div>
+      <div class="logo">GOF</div>
+      <p style="margin-top:16px;line-height:1.7;color:#555;">
+        Premium sneaker marketplace for clean footwear, streetwear culture, and iconic brands.
+      </p>
+    </div>
+
+    <div>
+      <h4>About GOF</h4>
+      <a>Our Story</a>
+      <a>Careers</a>
+      <a>Brands</a>
+      <a>Stores</a>
+    </div>
+
+    <div>
+      <h4>Customer Service</h4>
+      <a>Shipping</a>
+      <a>Returns</a>
+      <a>Contact</a>
+      <a>Size Guide</a>
+    </div>
+
+    <div>
+      <h4>Legal</h4>
+      <a>Privacy Policy</a>
+      <a>Terms</a>
+      <a>Instagram</a>
+      <a>TikTok</a>
+    </div>
+  </footer>
+
+  <script>
+   const products = [
+  {
+    id: 1,
+    brand: "Nike",
+    name: "Air Force 1 '07 White",
+    price: 1350,
+    old: 1500,
+    rating: 4.8,
+    category: "Lifestyle Sneakers",
+    color: "White",
+    gender: "Unisex",
+    sizes: [39, 40, 41, 42, 43, 44, 45],
+    images: [
+      "images/e6da41fa_1be4_4ce5_b89c_22be4f1f02d4.webp",
+      "images/d62499db_6a46_43a7_8135_cefaa88124ed.webp",
+      "images/6036bbbb_1cf1_410c_9546_8fb737c95797.webp",
+      "images/ea33db62_7df9_480a_b5f7_3634525852eb.webp",
+      "images/4e7ab05b_409d_4871_9806_0ce1726d3365.webp",
+      "images/120cea43_932a_4743_a537_052f9c664956.webp",
+      "images/b4fff5a0_0204_4437_9181_c56817812daa.webp",
+      "images/aa33f175_561c_4635_bea2_b516b18a70b8.webp",
+      "images/9bf152de_bad7_4ee9_aab7_245d89c5d86c.webp"
+    ],
+    description: "The Nike Air Force 1 '07 White delivers a clean all-white leather look with timeless streetwear style and everyday comfort.",
+    material: "Leather upper, perforated toe box, foam midsole, padded collar, rubber outsole.",
+    shipping: "Fast shipping available. Delivery time depends on your location.",
+    returns: "Returns accepted within 30 days if unworn and in original packaging."
+  },
+  {
+  id: 2,
+  brand: "Nike",
+  name: "Air Force 1 '07 Black",
+  price: 1500,
+  old: null,
+  rating: 4,
+  category: "Lifestyle Sneakers",
+  color: "Black",
+  gender: "Unisex",
+  sizes: [39, 40, 41, 42, 43, 44, 45],
+  images: [
+    "images/black1.webp",
+    "images/black2.webp",
+    "images/black3.webp",
+    "images/black4.webp",
+    "images/black5.webp",
+    "images/black6.webp",
+    "images/black7.webp",
+    "images/black8.webp",
+    "images/black9.webp"
+  ],
+  description: "The Nike Air Force 1 '07 Black features an all-black leather upper with the iconic AF1 silhouette, offering classic streetwear style and all-day comfort.",
+  material: "Leather upper, perforated toe box, foam midsole, padded collar, rubber outsole.",
+  shipping: "Fast shipping available. Delivery time depends on your location.",
+  returns: "Returns accepted within 30 days if unworn and in original packaging."
+},
+{
+  id: 3,
+  brand: "Nike",
+  name: "Air Jordan 4 Black Cat",
+  price: 2000,
+  old: 2200,
+  rating: 5,
+  category: "Lifestyle Sneakers",
+  color: "Black",
+  gender: "Unisex",
+  sizes: [39, 40, 41, 42, 43, 44, 45],
+  images: [
+    "images/Black Cat1.avif",
+    "images/Black Cat2.avif",
+    "images/Black Cat3.avif",
+    "images/Black Cat4.avif",
+    "images/Black Cat5.avif",
+    "images/Black Cat6.avif"
+  ],
+  description: "The Air Jordan 4 Black Cat features an all-black premium nubuck upper with matching black detailing, delivering a sleek and iconic look inspired by Michael Jordan's Black Cat persona.",
+  material: "Premium nubuck upper, mesh panels, visible Air cushioning, padded collar, durable rubber outsole.",
+  shipping: "Fast shipping available. Delivery time depends on your location.",
+  returns: "Returns accepted within 30 days if unworn and in original packaging."
+}
+];
+
+    let cart = [];
+    let wishlist = [];
+
+    function money(value) {
+      return `${value} LE`;
+    }
+
+    function productImage(product) {
+      return product.images && product.images.length ? product.images[0] : "";
+    }
+
+    const filters = {
+      category: [],
+      size: [],
+      color: []
+    };
+
+    function toggleFilter(type, value) {
+      const selectedValues = filters[type];
+      const currentIndex = selectedValues.indexOf(value);
+
+      if (currentIndex > -1) {
+        selectedValues.splice(currentIndex, 1);
+      } else {
+        selectedValues.push(value);
+      }
+
+      renderProducts();
+    }
+
+    function setSort(value) {
+      document.getElementById("sort").value = value;
+      renderProducts();
+    }
+
+    function clearFilters() {
+      filters.category = [];
+      filters.size = [];
+      filters.color = [];
+      document.getElementById("search").value = "";
+      setSort("relevance");
+    }
+
+    function syncFilterUI() {
+      document.querySelectorAll("[data-filter]").forEach(option => {
+        const type = option.dataset.filter;
+        const rawValue = option.dataset.value;
+        const value = type === "size" ? Number(rawValue) : rawValue;
+        option.classList.toggle("selected", filters[type].includes(value));
+      });
+
+      document.querySelectorAll("[data-sort-option]").forEach(option => {
+        const isActive = option.dataset.sortOption === document.getElementById("sort").value;
+        option.classList.toggle("selected", isActive);
+        option.querySelector(".circle").classList.toggle("active", isActive);
+      });
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById("productGrid");
+      const search = document.getElementById("search").value.toLowerCase();
+      const sort = document.getElementById("sort").value;
+
+      let list = products.filter(p => {
+        const matchesSearch =
+          p.name.toLowerCase().includes(search) ||
+          p.brand.toLowerCase().includes(search) ||
+          p.category.toLowerCase().includes(search) ||
+          p.color.toLowerCase().includes(search);
+
+        const matchesCategory = !filters.category.length || filters.category.includes(p.category);
+        const matchesSize = !filters.size.length || filters.size.some(size => p.sizes.includes(size));
+        const matchesColor = !filters.color.length || filters.color.includes(p.color);
+
+        return matchesSearch && matchesCategory && matchesSize && matchesColor;
+      });
+
+      if (sort === "low") list.sort((a, b) => a.price - b.price);
+      if (sort === "high") list.sort((a, b) => b.price - a.price);
+      if (sort === "newest") list.sort((a, b) => b.id - a.id);
+
+      syncFilterUI();
+
+      if (!list.length) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <strong>No products found.</strong><br>
+            Try another search term or clear the filters.
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = list.map(p => `
+        <article class="product">
+          <button class="wishlist" onclick="event.stopPropagation(); addWishlist(${p.id})">♡</button>
+
+          <div onclick="openProduct(${p.id})">
+            <div class="product-img">
+              <img src="${productImage(p)}" alt="${p.name}">
+            </div>
+
+            <div class="product-info">
+              <div class="brand">${p.brand}</div>
+              <div class="product-name">${p.name}</div>
+              <div class="product-color">${p.color}</div>
+              <div class="rating">★ ${p.rating}</div>
+
+              <div class="price-row">
+                <span>${money(p.price)}</span>
+                ${p.old ? `<span class="old-price">${money(p.old)}</span>` : ""}
+              </div>
+            </div>
+          </div>
+
+          <button class="quick" onclick="addToCart(${p.id})">Quick Add</button>
+        </article>
+      `).join("");
+    }
+
+    function hideAll() {
+      document.getElementById("home").style.display = "none";
+      document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
+    }
+
+    function showHome() {
+      document.getElementById("home").style.display = "block";
+      document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function changeImage(src) {
+      document.getElementById("mainImage").src = src;
+    }
+
+    function openProduct(id) {
+      const p = products.find(product => product.id === id);
+      hideAll();
+
+      document.getElementById("productPage").innerHTML = `
+        <div class="product-page">
+          <div>
+            <div class="gallery-main">
+              <img id="mainImage" src="${productImage(p)}" alt="${p.name}">
+            </div>
+
+            <div class="thumbs">
+              ${p.images.map(img => `
+                <div class="thumb" onclick="changeImage('${img}')">
+                  <img src="${img}" alt="${p.name}">
+                </div>
+              `).join("")}
+            </div>
+          </div>
+
+          <div class="details">
+            <div class="brand">${p.brand}</div>
+            <h1>${p.name}</h1>
+            <div class="rating">★★★★★ Customer Reviews</div>
+
+            <div class="price-row">
+              <strong>${money(p.price)}</strong>
+              ${p.old ? `<span class="old-price">${money(p.old)}</span>` : ""}
+            </div>
+
+            <div class="section-label">Available Sizes</div>
+            <div class="sizes">
+              ${p.sizes.map(size => `<button class="pill">${size}</button>`).join("")}
+            </div>
+
+            <div class="section-label">Color Selection</div>
+            <div class="colors">
+              <button class="pill">${p.color}</button>
+            </div>
+
+            <div class="section-label">Quantity</div>
+            <input class="qty" id="qty" type="number" value="1" min="1">
+
+            <div class="actions">
+              <button class="btn" onclick="addToCart(${p.id})">Add To Cart</button>
+              <button class="btn secondary" onclick="showCheckout()">Buy Now</button>
+            </div>
+
+            <div class="info-box">
+              <strong>Product Description</strong><br>
+              ${p.description}
+            </div>
+
+            <div class="info-box">
+              <strong>Material Information</strong><br>
+              ${p.material}
+            </div>
+
+            <div class="info-box">
+              <strong>Shipping</strong><br>
+              ${p.shipping}
+            </div>
+
+            <div class="info-box">
+              <strong>Returns</strong><br>
+              ${p.returns}
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("productPage").classList.add("active");
+      window.scrollTo(0, 0);
+    }
+
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      const item = cart.find(i => i.id === id);
+
+      if (item) {
+        item.qty++;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+
+      alert("Added to cart");
+    }
+
+    function addWishlist(id) {
+      const product = products.find(p => p.id === id);
+
+      if (!wishlist.find(item => item.id === id)) {
+        wishlist.push(product);
+      }
+
+      alert("Added to wishlist");
+    }
+
+    function showCart() {
+      hideAll();
+
+      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+      document.getElementById("cartPage").innerHTML = `
+        <h1>Your Cart</h1>
+
+        ${cart.length ? cart.map(item => `
+          <div class="cart-item">
+            <img src="${productImage(item)}" alt="${item.name}">
+
+            <div>
+              <div class="brand">${item.brand}</div>
+              <h3>${item.name}</h3>
+              <p>${money(item.price)}</p>
+            </div>
+
+            <input class="qty" type="number" min="1" value="${item.qty}" onchange="updateQty(${item.id}, this.value)">
+
+            <button class="btn secondary" onclick="removeCart(${item.id})">Remove</button>
+          </div>
+        `).join("") : `<p>Your cart is empty.</p>`}
+
+        <h2 style="margin:30px 0;">Total: ${money(total)}</h2>
+
+        <button class="btn" onclick="showCheckout()">Checkout</button>
+      `;
+
+      document.getElementById("cartPage").classList.add("active");
+    }
+
+    function updateQty(id, qty) {
+      const item = cart.find(i => i.id === id);
+      item.qty = Number(qty);
+      showCart();
+    }
+
+    function removeCart(id) {
+      cart = cart.filter(item => item.id !== id);
+      showCart();
+    }
+
+    function showCheckout() {
+      hideAll();
+
+      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+      document.getElementById("checkoutPage").innerHTML = `
+        <h1>Checkout</h1>
+
+        <div class="checkout-form" style="margin-top:24px;">
+          <input placeholder="Full Name">
+          <input placeholder="Email Address">
+          <input placeholder="Phone Number">
+          <input placeholder="Country">
+          <input placeholder="City">
+          <input placeholder="Shipping Address">
+
+          <select>
+            <option>Cash on Delivery</option>
+            <option>Credit Card</option>
+            <option>PayPal</option>
+          </select>
+
+          <input placeholder="Payment Notes">
+        </div>
+
+        <div class="info-box" style="max-width:820px;">
+          <strong>Order Summary</strong><br>
+          Items: ${cart.length}<br>
+          Total: ${money(total)}
+        </div>
+
+        <button class="btn" style="margin-top:20px;" onclick="alert('Order placed successfully')">
+          Place Order
+        </button>
+      `;
+
+      document.getElementById("checkoutPage").classList.add("active");
+    }
+
+    function showAccount() {
+      hideAll();
+
+      document.getElementById("accountPage").innerHTML = `
+        <h1>User Account</h1>
+
+        <div class="checkout-form" style="margin-top:24px;">
+          <input placeholder="Email">
+          <input placeholder="Password" type="password">
+          <button class="btn">Login</button>
+          <button class="btn secondary">Sign Up</button>
+        </div>
+
+        <div class="info-box">
+          <strong>Profile</strong><br>
+          Name: GOF Customer<br>
+          Membership: Premium Sneaker Club
+        </div>
+
+        <div class="info-box">
+          <strong>Order History</strong><br>
+          No orders yet.
+        </div>
+      `;
+
+      document.getElementById("accountPage").classList.add("active");
+    }
+
+    function showWishlist() {
+      hideAll();
+
+      document.getElementById("wishlistPage").innerHTML = `
+        <h1>Wishlist</h1>
+
+        <div class="grid" style="margin-top:28px;">
+          ${wishlist.length ? wishlist.map(p => `
+            <article class="product" onclick="openProduct(${p.id})">
+              <div class="product-img">
+                <img src="${productImage(p)}" alt="${p.name}">
+              </div>
+
+              <div class="product-info">
+                <div class="brand">${p.brand}</div>
+                <div class="product-name">${p.name}</div>
+                <div class="price-row">${money(p.price)}</div>
+              </div>
+            </article>
+          `).join("") : `<p>Your wishlist is empty.</p>`}
+        </div>
+      `;
+
+      document.getElementById("wishlistPage").classList.add("active");
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>

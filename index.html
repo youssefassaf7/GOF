@@ -659,6 +659,12 @@
   </footer>
 
   <script>
+    const GOOGLE_SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbwiusft3VHK9fyem2e9BxMm6kK1AhnnWlfxEg5bZe0u3hZhQTkYwTDLf492EWIL4apx/exec";
+
+const WHATSAPP_NUMBER = "201153584087";
+    const ORDER_EMAIL = "youssef.ahmed.s7s2005@gmail.com";
+
    const products = [
   {
     id: 1,
@@ -1025,35 +1031,147 @@
         <h1>Checkout</h1>
 
         <div class="checkout-form" style="margin-top:24px;">
-          <input placeholder="Full Name">
-          <input placeholder="Email Address">
-          <input placeholder="Phone Number">
-          <input placeholder="Country">
-          <input placeholder="City">
-          <input placeholder="Shipping Address">
+          <input id="customerName" placeholder="Full Name" required>
+          <input id="customerEmail" placeholder="Email Address" type="email" required>
+          <input id="customerPhone" placeholder="Phone Number" required>
+          <input id="customerCountry" placeholder="Country" required>
+          <input id="customerCity" placeholder="City" required>
+          <input id="customerAddress" placeholder="Shipping Address" required>
 
-          <select>
+          <select id="paymentMethod">
             <option>Cash on Delivery</option>
             <option>Credit Card</option>
             <option>PayPal</option>
           </select>
 
-          <input placeholder="Payment Notes">
+          <input id="paymentNotes" placeholder="Payment Notes">
         </div>
 
         <div class="info-box" style="max-width:820px;">
           <strong>Order Summary</strong><br>
           Items: ${cart.length}<br>
-          Total: ${money(total)}
+          Total: ${money(total)}<br>
+          <span style="font-size:13px;color:#777;">Orders will be saved to Google Sheets and sent to Gmail.</span>
         </div>
 
-        <button class="btn" style="margin-top:20px;" onclick="alert('Order placed successfully')">
+        <button class="btn" id="placeOrderBtn" style="margin-top:20px;" onclick="placeOrder()">
           Place Order
         </button>
       `;
 
       document.getElementById("checkoutPage").classList.add("active");
     }
+
+    function getInputValue(id) {
+      const element = document.getElementById(id);
+      return element ? element.value.trim() : "";
+    }
+
+    function buildOrderData() {
+      const orderId = "GOF-" + Date.now();
+      const date = new Date().toLocaleString();
+
+      const orderItems = cart.map(item => ({
+        id: item.id,
+        brand: item.brand,
+        name: item.name,
+        price: item.price,
+        qty: item.qty,
+        subtotal: item.price * item.qty
+      }));
+
+      const total = orderItems.reduce((sum, item) => sum + item.subtotal, 0);
+
+      return {
+        orderId,
+        date,
+        customerName: getInputValue("customerName"),
+        customerEmail: getInputValue("customerEmail"),
+        customerPhone: getInputValue("customerPhone"),
+        customerCountry: getInputValue("customerCountry"),
+        customerCity: getInputValue("customerCity"),
+        customerAddress: getInputValue("customerAddress"),
+        paymentMethod: getInputValue("paymentMethod"),
+        paymentNotes: getInputValue("paymentNotes"),
+        items: orderItems,
+        total,
+        orderEmail: ORDER_EMAIL
+      };
+    }
+
+    function createOrderMessage(order) {
+      const itemsText = order.items.map(item =>
+        `${item.name} | Qty: ${item.qty} | ${item.subtotal} LE`
+      ).join("\n");
+
+      return (
+        `New GOF Order\n\n` +
+        `Order ID: ${order.orderId}\n` +
+        `Date: ${order.date}\n\n` +
+        `Customer Name: ${order.customerName}\n` +
+        `Phone: ${order.customerPhone}\n` +
+        `Email: ${order.customerEmail}\n` +
+        `Country: ${order.customerCountry}\n` +
+        `City: ${order.customerCity}\n` +
+        `Address: ${order.customerAddress}\n\n` +
+        `Items:\n${itemsText}\n\n` +
+        `Payment: ${order.paymentMethod}\n` +
+        `Notes: ${order.paymentNotes || "No notes"}\n` +
+        `Total: ${order.total} LE`
+      );
+    }
+
+    async function placeOrder() {
+      if (!cart.length) {
+        alert("Your cart is empty.");
+        return;
+      }
+
+      const order = buildOrderData();
+
+      if (
+        !order.customerName ||
+        !order.customerEmail ||
+        !order.customerPhone ||
+        !order.customerCountry ||
+        !order.customerCity ||
+        !order.customerAddress
+      ) {
+        alert("Please fill in all required checkout fields.");
+        return;
+      }
+
+      const button = document.getElementById("placeOrderBtn");
+      button.disabled = true;
+      button.textContent = "Sending Order...";
+
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(order)
+        });
+
+        const whatsappMessage = createOrderMessage(order);
+        window.open(
+          `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`,
+          "_blank"
+        );
+
+        cart = [];
+        alert("Order placed successfully. It was sent to Google Sheets, Gmail, and WhatsApp.");
+        showHome();
+      } catch (error) {
+        console.error(error);
+        alert("There was a problem sending the order. Please try again.");
+        button.disabled = false;
+        button.textContent = "Place Order";
+      }
+    }
+
 
     function showAccount() {
       hideAll();
